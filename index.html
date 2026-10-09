@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rafiel C. Sombilon | Data Entry, Settlement & Design Specialist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-body: #080c14;
+            --bg-card: rgba(21, 28, 40, 0.75);
+            --bg-card-hover: rgba(30, 41, 59, 0.85);
+            --accent-blue: #38bdf8;
+            --accent-purple: #818cf8;
+            --accent-emerald: #34d399;
+            --accent-amber: #fbbf24;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --glow-blue: rgba(56, 189, 248, 0.2);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+
+        /* Glassmorphism Styles */
+        .glass-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(160px);
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+        .glow-1 { top: -100px; left: -100px; background: radial-gradient(circle, #0284c7, transparent 70%); }
+        .glow-2 { bottom: -100px; right: -100px; background: radial-gradient(circle, #4f46e5, transparent 70%); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #080c14; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+
+        .profile-frame {
+            position: relative;
+            border-radius: 24px;
+            padding: 6px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.5), rgba(129, 140, 248, 0.2), rgba(52, 211, 153, 0.3));
+            box-shadow: 0 0 35px var(--glow-blue);
+        }
+
+        .profile-img {
+            border-radius: 18px;
+            filter: contrast(1.05) brightness(1.02);
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Portfolio Visual Card */
+        .portfolio-card {
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .portfolio-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 16px 35px rgba(56, 189, 248, 0.18);
+        }
+
+        .img-container {
+            position: relative;
+            overflow: hidden;
+            background: #0f172a;
+        }
+
+        .img-container img {
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-card:hover .img-container img {
+            transform: scale(1.04);
+        }
+
+        /* Modal Lightbox */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(4, 8, 15, 0.92);
+            backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .modal.active { display: flex; }
+
+        @keyframes modalFade {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-animated { animation: modalFade 0.25s ease-out forwards; }
+
+        /* HOME HERO BACKGROUND ONLY — inspired by settlement, data entry, and design work */
+        #about {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            border-radius: 0 0 30px 30px;
+            background:
+                radial-gradient(ellipse at 15% 18%, rgba(14, 165, 233, 0.18), transparent 42%),
+                radial-gradient(ellipse at 78% 70%, rgba(99, 102, 241, 0.16), transparent 38%),
+                radial-gradient(ellipse at 52% 0%, rgba(52, 211, 153, 0.08), transparent 48%),
+                linear-gradient(125deg, #081522 0%, #0a1020 52%, #111127 100%);
+            box-shadow: inset 0 1px 0 rgba(125, 211, 252, 0.12),
+                        0 28px 70px rgba(2, 8, 23, 0.24);
+        }
+
+        #about::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.42;
+            background-image:
+                linear-gradient(rgba(148, 163, 184, 0.075) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.075) 1px, transparent 1px);
+            background-size: 34px 34px;
+            mask-image: linear-gradient(90deg, black 0%, rgba(0,0,0,0.6) 48%, transparent 100%);
+        }
+
+        #about::after {
+            content: "SETTLEMENT  /  DATA ENTRY  /  CREATIVE DESIGN";
+            position: absolute;
+            z-index: -1;
+            right: 2.5rem;
+            bottom: 1.6rem;
+            max-width: calc(100% - 3rem);
+            color: rgba(186, 230, 253, 0.16);
+            font-size: clamp(0.55rem, 1vw, 0.72rem);
+            font-weight: 800;
+            letter-spacing: 0.24em;
+            line-height: 1.8;
+            text-align: right;
+            pointer-events: none;
+            white-space: normal;
+        }
+
+        #about .profile-frame {
+            box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.16),
+                        0 0 45px rgba(56, 189, 248, 0.16),
+                        0 24px 65px rgba(0, 0, 0, 0.35);
+        }
+
+        @media (max-width: 640px) {
+            #about {
+                border-radius: 0 0 22px 22px;
+            }
+            #about::after {
+                right: 1rem;
+                bottom: 0.75rem;
+                letter-spacing: 0.12em;
+                font-size: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="selection:bg-sky-500 selection:text-white">
+
+    <!-- Background Ambient Glow -->
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+
+    <nav class="sticky top-0 z-50 glass-panel border-b border-slate-800/80 px-6 py-4 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="#" class="font-extrabold text-xl tracking-tight text-white">
+                RAFIEL C. <span class="text-sky-400">SOMBILON</span>
+            </a>
+            <div class="hidden md:flex gap-8 text-sm font-semibold text-slate-400">
+                <a href="#about" class="hover:text-sky-400 transition-colors">About</a>
+                <a href="#portfolio" class="hover:text-sky-400 transition-colors">Visual Portfolio</a>
+                <a href="#experience" class="hover:text-sky-400 transition-colors">Experience</a>
+                <a href="#skills" class="hover:text-sky-400 transition-colors">Skills & Tools</a>
+                <a href="#education" class="hover:text-sky-400 transition-colors">Education</a>
+            </div>
+            <a href="mailto:rafielsombilon03@gmail.com" class="px-4 py-2 text-xs font-bold uppercase tracking-wider text-slate-900 bg-sky-400 hover:bg-sky-300 rounded-lg transition-all shadow-lg shadow-sky-500/20">
+                Contact Me
+            </a>
+        </div>
+    </nav>
+
+    <header id="about" class="max-w-6xl mx-auto px-6 pt-12 pb-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            
+            <!-- Left Info Column -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-sky-500/30 text-sky-400 text-xs font-bold tracking-wide">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Available for Remote & On-Site Roles
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                    Data Entry, Settlement & <br class="hidden sm:inline">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-indigo-400 to-emerald-400">
+                        Design Specialist
+                    </span>
+                </h1>
+
+                <p class="text-slate-300 text-base md:text-lg leading-relaxed max-w-2xl">
+                    High-precision professional with hands-on leadership experience in daily financial settlements at <strong class="text-sky-300">PearlPay</strong>, wagering risk detection at <strong class="text-indigo-300">RWB Smart Solution</strong>, and custom pre-press artwork design at <strong class="text-emerald-300">RipeConcepts</strong>.
+                </p>
+
+                <!-- Key Details Badges -->
+                <div class="flex flex-wrap gap-4 justify-center lg:justify-start text-xs font-semibold text-slate-300">
+                    <div class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-800/60 border border-slate-700">
+                        <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        Mandaue City, Cebu, Philippines
+                    </div>
+                    <div class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-800/60 border border-slate-700">
+                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        rafielsombilon03@gmail.com
+                    </div>
+                    <div class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-800/60 border border-slate-700">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                        09651632958
+                    </div>
+                </div>
+
+                <div class="pt-2 flex flex-wrap gap-4 justify-center lg:justify-start">
+                    <a href="#portfolio" class="px-6 py-3 text-sm font-bold text-slate-950 bg-sky-400 hover:bg-sky-300 rounded-xl transition-all shadow-lg shadow-sky-500/25 flex items-center gap-2">
+                        View Sample Projects
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </a>
+                    <a href="#experience" class="px-6 py-3 text-sm font-bold text-white glass-panel hover:bg-slate-800 rounded-xl transition-all border border-slate-700">
+                        Explore Experience
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Profile Photo Column -->
+            <div class="lg:col-span-5 flex justify-center">
+                <div class="w-64 sm:w-72 lg:w-80 profile-frame">
+                    <div class="relative overflow-hidden rounded-2xl bg-slate-900 aspect-[3/4]">
+                        <img src="Liefarme.png" alt="Rafiel C. Sombilon" class="profile-img">
+                        <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent text-center">
+                            <h3 class="text-white font-bold text-lg">Rafiel C. Sombilon</h3>
+                            <p class="text-sky-400 text-xs font-semibold">Operations Lead & Data Specialist</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <section id="portfolio" class="max-w-6xl mx-auto px-6 py-12">
+        <div class="mb-10 text-center md:text-left">
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Featured Interactive Portfolio</h2>
+            <p class="text-slate-400 text-sm mt-1">Direct samples of custom templates, risk detection systems, and graphic design deliverables.</p>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap gap-2 mb-8 justify-center md:justify-start">
+            <button onclick="filterGallery('all', event)" class="filter-btn active px-4 py-2 rounded-lg glass-panel text-xs font-bold text-sky-400 border border-sky-400/40">All Projects</button>
+            <button onclick="filterGallery('settlement', event)" class="filter-btn px-4 py-2 rounded-lg glass-panel text-xs font-bold text-slate-400 border border-slate-700 hover:text-white">Settlement & Operations</button>
+            <button onclick="filterGallery('risk', event)" class="filter-btn px-4 py-2 rounded-lg glass-panel text-xs font-bold text-slate-400 border border-slate-700 hover:text-white">Risk Analysis & Excel</button>
+            <button onclick="filterGallery('design', event)" class="filter-btn px-4 py-2 rounded-lg glass-panel text-xs font-bold text-slate-400 border border-slate-700 hover:text-white">Graphic & Pre-Press Design</button>
+        </div>
+
+        <!-- Portfolio Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- CARD 1: PearlPay Settlement -->
+            <div class="portfolio-card glass-panel rounded-2xl overflow-hidden flex flex-col cursor-pointer border border-slate-800" data-category="settlement" onclick="openModal('pearlpay')">
+                <div class="img-container h-52">
+                    <img src="REPORTEAM.png" alt="PearlPay Settlement Template" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-slate-950/60 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white font-bold text-sm backdrop-blur-sm">
+                        <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                        Click to Expand Full Template
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-sky-400">PearlPay Operations</span>
+                        <h3 class="text-lg font-bold text-white mt-1">Morning Balance Settlement Sheet</h3>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                            Custom daily balance reconciliation template created for the PearlPay report team, tracking opening balances, deposit/withdrawal totals, e-wallet commissions, and discrepancy audits.
+                        </p>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-1.5">
+                        <span class="px-2 py-1 rounded bg-slate-900 text-[10px] text-slate-300 font-mono border border-slate-800">Financial Audit</span>
+                        <span class="px-2 py-1 rounded bg-slate-900 text-[10px] text-slate-300 font-mono border border-slate-800">Custom Sheet Template</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 2: RWB Betting Risk Tool -->
+            <div class="portfolio-card glass-panel rounded-2xl overflow-hidden flex flex-col cursor-pointer border border-slate-800" data-category="risk" onclick="openModal('rwb')">
+                <div class="img-container h-52">
+                    <img src="risk1.png" alt="RWB Betting Risk Audit Tool" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-slate-950/60 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white font-bold text-sm backdrop-blur-sm">
+                        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                        Click to Expand Full Spreadsheet
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-indigo-400">RWB Smart Solution</span>
+                        <h3 class="text-lg font-bold text-white mt-1">Betting Risk & Suspicious Checker Tool</h3>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                            Internal high-speed Excel risk model built to map betting IDs, odds differentials, liabilities, and trigger suspicious bet pattern alerts across high-volume wagering data.
+                        </p>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-1.5">
+                        <span class="px-2 py-1 rounded bg-slate-900 text-[10px] text-slate-300 font-mono border border-slate-800">Advanced Excel Macros</span>
+                        <span class="px-2 py-1 rounded bg-slate-900 text-[10px] text-slate-300 font-mono border border-slate-800">Anomaly Detection</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 3: RipeConcepts - Wedding Cards -->
+            <div class="portfolio-card glass-panel rounded-2xl overflow-hidden flex flex-col cursor-pointer border border-slate-800" data-category="design" onclick="openModal('wedding')">
+                <div class="img-container h-52">
+                    <img src="DA2.png" style="display:none;" />
+                    <img src="DA1.png" alt="Wedding Floral Invitation Suite" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-slate-950/60 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white font-bold text-sm backdrop-blur-sm">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                        Inspect Design Suite
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">RipeConcepts Design</span>
+                        <h3 class="text-lg font-bold text-white mt-1">Wedding Invitation & Save-the-Date Suite</h3>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                            Elegant floral stationery design suite customized for e-commerce client printing, incorporating precise typography layouts, color profile CMYK conversion, and pre-press bleeds.
+                        </p>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-1.5">
+                        <span class="px-2 py-1 rounded bg-slate-900 text-[10px] text-slate-300 font-mono border border-slate-800">Photoshop / Illustrator</span>
+                        <span class="px-2 py-1 rounded bg-slate-900 text-[10px] text-slate-300 font-mono border border-slate-800">Pre-Press Proofing</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 4: RipeConcepts - Fig Pizza & Food Cards -->
+            <div class="portfolio-card glass-panel rounded-2xl overflow-hidden flex flex-col cursor-pointer border border-slate-800" data-category="design" onclick="openModal('figs')">
+                <div class="img-container h-52">
+                    <img src="DA3.png" alt="Graphic Design Banners" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-slate-950/60 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white font-bold text-sm backdrop-blur-sm">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                        Inspect Visual Art
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">RipeConcepts Design</span>
+                        <h3 class="text-lg font-bold text-white mt-1">Custom Illustrated Banner & Menu Cards</h3>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                            Vector illustration artwork and layout composition designed following strict Australian client markup annotations and print quality standards.
+                        </p>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-1.5">
+                        <span class="px-2 py-1 rounded bg-slate-900 text-[10px] text-slate-300 font-mono border border-slate-800">Vector Art</span>
+                        <span class="px-2 py-1 rounded bg-slate-900 text-[10px] text-slate-300 font-mono border border-slate-800">Client Annotations</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 5: RipeConcepts - Corporate Annual Impact Brochure -->
+            <div class="portfolio-card glass-panel rounded-2xl overflow-hidden flex flex-col cursor-pointer border border-slate-800" data-category="design" onclick="openModal('impact')">
+                <div class="img-container h-52">
+                    <img src="anualreport.png" alt="Corporate Impact Report Layout" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-slate-950/60 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white font-bold text-sm backdrop-blur-sm">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                        Inspect Brochure Layout
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">RipeConcepts Layout</span>
+                        <h3 class="text-lg font-bold text-white mt-1">Corporate Impact Report & Infographics</h3>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                            High-impact corporate double-page brochure layout combining metric visualization, photographic arrangement, and modern brand alignment.
+                        </p>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-1.5">
+                        <span class="px-2 py-1 rounded bg-slate-900 text-[10px] text-slate-300 font-mono border border-slate-800">Editorial Design</span>
+                        <span class="px-2 py-1 rounded bg-slate-900 text-[10px] text-slate-300 font-mono border border-slate-800">Infographics</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="experience" class="max-w-6xl mx-auto px-6 py-12">
+        <div class="mb-10 text-center md:text-left">
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Professional Work Experience</h2>
+            <p class="text-slate-400 text-sm mt-1">Demonstrated operational accuracy, team leadership, and error-free execution.</p>
+        </div>
+
+        <div class="relative border-l-2 border-slate-800 ml-4 md:ml-6 space-y-10">
+
+            <!-- Timeline Item 1 -->
+            <div class="relative pl-8 md:pl-10">
+                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-sky-400 border-4 border-slate-950 shadow-lg shadow-sky-400/50"></div>
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Risk & Data Entry Specialist</h3>
+                            <span class="text-sky-400 font-semibold text-sm">RWB Smart Solution</span>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-slate-900 text-slate-400 text-xs font-mono w-fit">Key Role</span>
+                    </div>
+                    <ul class="list-disc list-inside space-y-2 text-slate-300 text-sm leading-relaxed">
+                        <li>Monitored high-volume daily betting transactions and proactively flagged suspicious accounts or abnormal wagering patterns to prevent fraud losses.</li>
+                        <li>Designed and maintained the <strong>Checker Suspicious Excel tool</strong> (utilizing INDEX/MATCH, VLOOKUP, and custom macros) for rapid data matching.</li>
+                        <li>Processed and mapped large data volumes into internal databases with strict quality control and zero tolerance for entry errors.</li>
+                        <li>Performed routine database sanitization and audits to preserve master record integrity.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Timeline Item 2 -->
+            <div class="relative pl-8 md:pl-10">
+                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-400 border-4 border-slate-950 shadow-lg shadow-indigo-400/50"></div>
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Settlement Officer / Senior Shift Leader</h3>
+                            <span class="text-indigo-400 font-semibold text-sm">PearlPay (Report Team)</span>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-slate-900 text-slate-400 text-xs font-mono w-fit">Leadership Role</span>
+                    </div>
+                    <ul class="list-disc list-inside space-y-2 text-slate-300 text-sm leading-relaxed">
+                        <li>Supervised end-of-day financial settlements, deposit/withdrawal reconciliations, and shift operational workflows.</li>
+                        <li>Created the official <strong>Morning Balance Settlement Template</strong> in Google Sheets/Excel for seamless shift-to-shift ledger handovers.</li>
+                        <li>Reconciled account balances across multiple payment gateways (bKash, Rocket, Upay, USDT) with zero discrepancy tolerance.</li>
+                        <li>Automated daily report consolidation using Google Apps Script to eliminate manual keying errors.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Timeline Item 3 -->
+            <div class="relative pl-8 md:pl-10">
+                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-emerald-400 border-4 border-slate-950 shadow-lg shadow-emerald-400/50"></div>
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Design Associate</h3>
+                            <span class="text-emerald-400 font-semibold text-sm">RipeConcepts, Inc.</span>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-slate-900 text-slate-400 text-xs font-mono w-fit">Creative Production</span>
+                    </div>
+                    <ul class="list-disc list-inside space-y-2 text-slate-300 text-sm leading-relaxed">
+                        <li>Produced custom print stationery (wedding invitations, holiday cards, photo cards, and corporate brochures) for major overseas e-commerce clients.</li>
+                        <li>Executed client revision markups in Adobe Photoshop and Illustrator with high attention to typography and visual hierarchy.</li>
+                        <li>Conducted strict pre-press quality assurance (DPI resolution checks, bleed margins, and trim guidelines) to guarantee flawless physical printing.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="skills" class="max-w-6xl mx-auto px-6 py-12">
+        <div class="mb-10 text-center md:text-left">
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Technical Skills & Software Literacy</h2>
+            <p class="text-slate-400 text-sm mt-1">Core technical toolkit honed across data auditing, automation, and design production.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-sky-500/50 transition-colors">
+                <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Spreadsheet Mastery</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Advanced Excel (VLOOKUP, INDEX/MATCH, Pivot Tables), Google Sheets, Excel Macros, Custom Template Architecture.
+                </p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-indigo-500/50 transition-colors">
+                <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Workflow Automation</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Google Apps Script, Automated Settlement Tallies, Discrepancy Email Triggers, Process Optimization.
+                </p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition-colors">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Risk & Data Entry</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Betting Pattern Monitoring, High-Volume Record Entry, Ledger Reconciliation, Payment Gateway Auditing (bKash, USDT).
+                </p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-rose-500/50 transition-colors">
+                <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Graphic & Pre-Press</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Adobe Photoshop, Adobe Illustrator, Client Markup Proofing, Pre-Press Color & Bleed Calibration.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="education" class="max-w-6xl mx-auto px-6 py-12">
+        <div class="mb-10 text-center md:text-left">
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Education Background</h2>
+            <p class="text-slate-400 text-sm mt-1">Academic foundation in Cebu, Philippines.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold text-sky-400">Undergraduate Degree</span>
+                    <h3 class="text-lg font-bold text-white mt-1">Bachelor of Science in Information Technology</h3>
+                    <p class="text-slate-400 text-sm mt-1">Cebu Technological University Consolacion Campus</p>
+                    <p class="text-slate-500 text-xs mt-2">Laray Consolacion, Cebu, Philippines</p>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold text-indigo-400">Secondary Education</span>
+                    <h3 class="text-lg font-bold text-white mt-1">High School Diploma</h3>
+                    <p class="text-slate-400 text-sm mt-1">Liloan National High School</p>
+                    <p class="text-slate-500 text-xs mt-2">Poblacion Liloan, Cebu, Philippines</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="max-w-6xl mx-auto px-6 pt-12 pb-20">
+        <div class="glass-panel p-8 sm:p-12 rounded-3xl border border-sky-500/30 text-center relative overflow-hidden shadow-2xl">
+            <div class="absolute inset-0 bg-gradient-to-r from-sky-500/10 via-indigo-500/10 to-emerald-500/10 pointer-events-none"></div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">Let's Work Together</h2>
+            <p class="text-slate-300 text-sm max-w-xl mx-auto mb-8">
+                Ready to bring operational speed, zero-error financial settlements, and creative graphic precision to your team.
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-300 mb-8">
+                <div class="flex items-center gap-2">
+                    <span class="text-sky-400 font-bold">Email:</span> rafielsombilon03@gmail.com
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-sky-400 font-bold">Phone:</span> 09651632958
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-sky-400 font-bold">Location:</span> Casuntingan, Mandaue City, Cebu
+                </div>
+            </div>
+
+            <a href="mailto:rafielsombilon03@gmail.com" class="inline-flex items-center gap-2 px-8 py-4 text-sm font-extrabold text-slate-950 bg-sky-400 hover:bg-sky-300 rounded-xl transition-all shadow-xl shadow-sky-500/25">
+                Send Email Direct
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+        </div>
+        
+        <p class="text-center text-slate-600 text-xs mt-8">
+            &copy; 2026 Rafiel C. Sombilon. Interactive Portfolio Website designed for high precision.
+        </p>
+    </footer>
+
+    <div id="projectModal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content modal-animated glass-panel max-w-4xl w-full rounded-2xl border border-slate-700 overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center p-4 border-b border-slate-800 bg-slate-900/60">
+                <h3 id="modalTitle" class="text-lg font-bold text-white">Project Detail</h3>
+                <button onclick="closeModal(null, true)" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+                    &times;
+                </button>
+            </div>
+            
+            <div class="p-6 max-h-[80vh] overflow-y-auto">
+                <div id="modalImageContainer" class="mb-6 rounded-xl overflow-hidden border border-slate-800 bg-slate-950 flex justify-center">
+                    <img id="modalImg" src="" alt="Full Preview" class="max-h-[60vh] object-contain w-full">
+                </div>
+                <div id="modalDescription" class="text-slate-300 text-sm space-y-3 leading-relaxed">
+                    <!-- Dynamic details inserted here -->
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-800 bg-slate-900/40 text-right">
+                <button onclick="closeModal(null, true)" class="px-5 py-2 text-xs font-bold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors">
+                    Close Preview
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modalData = {
+            'pearlpay': {
+                title: 'PearlPay Morning Balance Settlement Sheet',
+                img: 'image_78283f.png',
+                desc: `<p><strong>Project Overview:</strong> Designed and implemented for the PearlPay report team under senior shift leadership.</p>
+                       <ul class="list-disc list-inside mt-2 space-y-1">
+                          <li>Tracks opening cash balances against daily deposits ($501M+) and withdrawals ($467M+).</li>
+                          <li>Calculates exact net commissions, eKYC counts, and special payment totals.</li>
+                          <li>Guarantees zero discrepancy auditing across payment gateways before shift handover.</li>
+                       </ul>`
+            },
+            'rwb': {
+                title: 'RWB Betting Risk & Suspicious Checker Tool',
+                img: 'image_77bee4.png',
+                desc: `<p><strong>Project Overview:</strong> High-speed automated betting risk spreadsheet built for RWB Smart Solution.</p>
+                       <ul class="list-disc list-inside mt-2 space-y-1">
+                          <li>Maps PL ID, IP addresses, odds differentials, liabilities, and match selections.</li>
+                          <li>Highlights abnormal odds patterns and high-frequency wagering risks automatically.</li>
+                          <li>Features built-in macro search triggers ("CLICK TO GENERATE") for rapid account lookup.</li>
+                       </ul>`
+            },
+            'wedding': {
+                title: 'RipeConcepts Wedding Invitation Suite',
+                img: 'image_77c2dd.png',
+                desc: `<p><strong>Project Overview:</strong> High-resolution vector floral wedding invitation suite created for Australian clients.</p>
+                       <ul class="list-disc list-inside mt-2 space-y-1">
+                          <li>Includes matching Save-the-Date and Invitation typography designs.</li>
+                          <li>Calibrated with strict CMYK printing profiles and 3mm pre-press bleeds.</li>
+                       </ul>`
+            },
+            'figs': {
+                title: 'RipeConcepts Fig Pizza Banner & Food Cards',
+                img: 'image_77c208.png',
+                desc: `<p><strong>Project Overview:</strong> Vector graphics and menu banner artwork collection.</p>
+                       <ul class="list-disc list-inside mt-2 space-y-1">
+                          <li>Created with custom digital illustration assets in Adobe Illustrator.</li>
+                          <li>Tailored to exact client annotation specs and brand layout parameters.</li>
+                       </ul>`
+            },
+            'impact': {
+                title: 'RipeConcepts Corporate Annual Impact Report',
+                img: 'image_77c24b.png',
+                desc: `<p><strong>Project Overview:</strong> High-level editorial layout and infographic brochure.</p>
+                       <ul class="list-disc list-inside mt-2 space-y-1">
+                          <li>Combines key performance metrics with vibrant photo compositing.</li>
+                          <li>Maintains strict corporate identity guidelines and typography balance.</li>
+                       </ul>`
+            }
+        };
+
+        function openModal(key) {
+            const data = modalData[key];
+            if (!data) return;
+
+            document.getElementById('modalTitle').innerText = data.title;
+            document.getElementById('modalImg').src = data.img;
+            document.getElementById('modalDescription').innerHTML = data.desc;
+            
+            const modal = document.getElementById('projectModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(e, force = false) {
+            if (force || (e && e.target.id === 'projectModal')) {
+                const modal = document.getElementById('projectModal');
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function filterGallery(category, event) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active', 'text-sky-400', 'border-sky-400/40');
+                btn.classList.add('text-slate-400', 'border-slate-700');
+            });
+
+            if (event) {
+                event.target.classList.add('active', 'text-sky-400', 'border-sky-400/40');
+                event.target.classList.remove('text-slate-400', 'border-slate-700');
+            }
+
+            const cards = document.querySelectorAll('.portfolio-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
